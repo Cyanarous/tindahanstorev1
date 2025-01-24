@@ -24,17 +24,19 @@
     </div>
     <div style="border: 3px solid black">
         <h2>Products</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Product</th>
+                    <th>Size</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
         @foreach($products as $product)
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Product</th>
-                        <th>Size</th>
-                        <th>Category</th>
-                        <th>Price</th>
-                    </tr>
-                </thead>
                 <tbody>
                     <tr>
                         <td>{{$product['id']}}</td>
@@ -42,6 +44,12 @@
                         <td>{{$product['size']}}</td>
                         <td>{{$product['category']}}</td>
                         <td>{{$product['price']}}</td>
+                        <td><a href="/edit-product/{{$product->id}}"">Edit</a></td>
+                        <td><form action="/delete-product/{{$product->id}}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button>Delete</button>
+                        </form></td>
                     </tr>
                 </tbody>
             </table>

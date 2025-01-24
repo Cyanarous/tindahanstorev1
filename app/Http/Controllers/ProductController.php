@@ -30,4 +30,39 @@ class ProductController extends Controller
         return redirect('/');
     }
     
+    public function editProduct(Product $product){
+        if(auth('web')->user()->id !== $product['user_id']){
+            return redirect('/');
+        }
+        return view('edit-product', ['product' => $product]);
+    }
+
+    public function updateProduct(Product $product, Request $request){
+        if(auth('web')->user()->id !== $product['user_id']){
+            return redirect('/');
+        }
+
+        $incomingFields = $request->validate([
+            'product' => 'required',
+            'size' => 'required',
+            'category' => 'required',
+            'price' => 'required|numeric',
+        ]);
+
+        $incomingFields['product'] = strip_tags($incomingFields['product']);
+        $incomingFields['size'] = strip_tags($incomingFields['size']);
+        $incomingFields['category'] = strip_tags($incomingFields['category']);
+        $incomingFields['price'] = strip_tags($incomingFields['price']);
+
+        $product->update($incomingFields);
+
+        return redirect('/');
+    }
+
+    public function deleteProduct(Product $product){
+        if(auth('web')->user()->id === $product['user_id']){
+            $product->delete();
+        }
+        return redirect('/');
+    }
 }
